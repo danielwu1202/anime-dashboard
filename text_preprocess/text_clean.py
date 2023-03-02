@@ -1,6 +1,7 @@
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+
 stop = stopwords.words('english')
 
 # 將文字轉換成小寫
@@ -27,17 +28,28 @@ def remove_digits(textSeries):
 def tokenize(origin, column, textSeries):
     origin[column] = textSeries.apply(word_tokenize)
 
-# 移除停用詞
-# FIXME
-def remove_stopwords(origin, column, textSeries):
-    origin[column] = textSeries.apply(lambda t: [].append(w for w in t if w not in stop))
 
 # 形成bi-gram和tri-gram
+def extract_ngrams(origin, column, num):
+    for l in origin[column]:
+        n_grams = ngrams(l, num)
+    return
+
+
+# 移除停用詞
+def remove_stopwords(origin, column):
+    origin['word_without_stopword'] = origin[column].apply(lambda x: [item for item in x if item not in stop])
 
 '''
-for l in token:
-    for s in l:
-        if s in stop:
-            l.remove(s)
+def remove_stopwords(origin, column):
+    word_without_stopwords = []
+    for words in origin[column]:
+        temp = []
+        for word in words:
+            if word not in stop:
+                temp.append(word)
+        word_without_stopwords.append(temp)
+    origin['word_without_stopword'] = word_without_stopwords
 '''
+
 
