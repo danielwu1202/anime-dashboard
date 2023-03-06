@@ -31,8 +31,6 @@ def tokenize(origin, column, textSeries):
 
 # 形成bi-gram和tri-gram
 def extract_ngrams(origin, column, num):
-    for l in origin[column]:
-        n_grams = ngrams(l, num)
     return
 
 
