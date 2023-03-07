@@ -8,8 +8,21 @@ from gensim.models.phrases import Phraser, Phrases
 nltk.download('omw-1.4')
 stop_words = stopwords.words('english')
 
+pos_code = {
+    'NNS': 'n', # 複數名詞
+    'VBD':'v',  # 過去式動詞
+    'VBG': 'v', # 現在分詞
+    'VBN': 'v', # 物去分詞
+    'VBZ': 'v', # 動詞(第三人稱)
+    'VBP': 'v', # 現在式動詞
+    'VB' : 'v', # 動詞
+    'NN': 'n', # 名詞
+    'JJ': 'a', # 形容詞
+    'RB': 'r' # 副詞
+            }
 
-def LDA_pipeline(data, column='Synopsis'):
+
+def LDA_pipeline(data, column='Synopsis', needed_pos=()):
     synopsis = data[column].values.tolist()
     sentences = [sent for sent in synopsis if sent != 'Unknown']
 
@@ -24,18 +37,11 @@ def LDA_pipeline(data, column='Synopsis'):
     for tag in tags:
         temp = []
         for t in tag:
-            if t[1] == 'NNS':
-                temp.append(wnl.lemmatize(t[0], pos = 'n'))
-            elif t[1] == 'VBD' or 'VBG' or 'VBN' or 'VBZ':
-                temp.append(wnl.lemmatize(t[0], pos = 'v'))
-            elif t[1] == 'NN':
-                temp.append(wnl.lemmatize(t[0], pos = 'n'))
-            elif t[1] == 'JJ':
-                temp.append(wnl.lemmatize(t[0], pos = 'a'))
-            elif t[1] == 'RB':
-                temp.append(wnl.lemmatize(t[0], pos = 'r'))
+            if t[1] in needed_pos:
+                temp.append(wnl.lemmatize(t[0], pos = pos_code[t[1]]))
         lemmed_token.append(temp)
 
+    # TODO 形成bigram、trigram的threshold和min_count
     bigram = Phrases(token)
     bigram_mod = Phraser(bigram)
     trigram = Phrases(bigram[token])
