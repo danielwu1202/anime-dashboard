@@ -22,9 +22,11 @@ pos_code = {
             }
 
 
-def LDA_pipeline(data, column='Synopsis', needed_pos=()):
+def LDA_pipeline(data, column='Synopsis', needed_pos=()): #needed_pos填入需要的詞性代碼
     synopsis = data[column].values.tolist()
     sentences = [sent for sent in synopsis if sent != 'Unknown']
+
+    assert len(sentences) + len(data[data[column] == 'Unknown']) == len(synopsis), '資料數量錯誤'
 
     wnl = WordNetLemmatizer()
 
@@ -32,14 +34,7 @@ def LDA_pipeline(data, column='Synopsis', needed_pos=()):
 
     tags = [pos_tag(text) for text in token]
 
-    # TODO 詞形還原的部分將詞性作為參數
-    lemmed_token = []
-    for tag in tags:
-        temp = []
-        for t in tag:
-            if t[1] in needed_pos:
-                temp.append(wnl.lemmatize(t[0], pos = pos_code[t[1]]))
-        lemmed_token.append(temp)
+    lemmed_token = [[wnl.lemmatize(t[0], pos = pos_code[t[1]]) for t in tag if t[1] in needed_pos] for tag in tags]
 
     # TODO 形成bigram、trigram的threshold和min_count
     bigram = Phrases(token)
@@ -56,6 +51,8 @@ def LDA_pipeline(data, column='Synopsis', needed_pos=()):
 
 
 
+def bertopic_preprocess():
+    return
 
 
 '''
