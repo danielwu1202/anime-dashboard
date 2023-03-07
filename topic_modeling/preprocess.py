@@ -22,7 +22,7 @@ pos_code = {
             }
 
 
-def LDA_pipeline(data, *needed_pos, column='Synopsis'): #needed_pos填入需要的詞性代碼
+def LDA_preprocess_pipeline(data, *needed_pos, column='Synopsis'): #needed_pos填入需要的詞性代碼
     synopsis = data[column].values.tolist()
     sentences = [sent for sent in synopsis if sent != 'Unknown']
 
@@ -51,7 +51,7 @@ def LDA_pipeline(data, *needed_pos, column='Synopsis'): #needed_pos填入需要�
 
 
 
-def bertopic_preprocess():
+def bertopic_preprocess_pipeline():
     return
 
 
