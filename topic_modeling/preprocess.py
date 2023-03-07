@@ -1,13 +1,17 @@
+import nltk
 import gensim
 from nltk.tag import pos_tag
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from gensim.models.phrases import Phraser, Phrases
 
+nltk.download('omw-1.4')
 stop_words = stopwords.words('english')
 
-def LDA_pipeline(sentences):
-    sentences = [sent for sent in sentences if sent != 'Unknown']
+
+def LDA_pipeline(data, column='Synopsis'):
+    synopsis = data[column].values.tolist()
+    sentences = [sent for sent in synopsis if sent != 'Unknown']
 
     wnl = WordNetLemmatizer()
 
@@ -43,6 +47,9 @@ def LDA_pipeline(sentences):
     word_nostop = [[word for word in text if word not in stop_words] for text in word_trigram]
 
     return word_nostop
+
+
+
 
 
 '''
