@@ -29,8 +29,8 @@ def anime_filter(data, column, genre, type):
 '''
 
 # 分類
-def anime_filter(data, column, filter, type):
-    data[data[column].str.contains(filter)].to_csv(str(type)+ '_' +str(filter) + '.csv', index=False, encoding = 'utf-8')
+def anime_filter(data, column, filter):
+    data[data[column].str.contains(filter)].to_csv(str(filter) + '.csv', index=False, encoding = 'utf-8')
 
 
 # 根據年份分類
